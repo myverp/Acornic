@@ -1,0 +1,61 @@
+# Acornic Roadmap
+
+## Current stage
+
+Acornic is in the foundation/pre-MVP stage. The repository contains:
+
+- A public landing page, sign-up and login flows, and a protected dashboard
+- Supabase SSR clients and environment validation
+- A multilingual schema for profiles, languages, decks, cards, and review events
+- Row Level Security policies for user-owned data
+- A framework-independent review-scheduler contract
+- Unit tests for authentication boundaries, language codes, and review ratings
+
+The application does not yet provide a complete vocabulary-learning workflow. Deck and card management, review sessions, progress tracking, and production deployment remain to be built.
+
+## Current technical status
+
+- ESLint, TypeScript, and all 19 unit tests pass through `npm run check`.
+- The local migration, database lint, and 12 cross-user RLS tests pass.
+- The local sign-up, confirmation, login, protected-routing, and logout flow is verified.
+- The production build passes.
+- The repository has an initial commit but no Git remote.
+- No hosted Supabase project or Vercel deployment has been configured.
+
+## Milestone 0: Stabilize the foundation
+
+- [x] Exclude generated Supabase files from ESLint and restore a passing `npm run check`.
+- [x] Run the local migration, database lint, and authorization tests with two users.
+- [x] Verify sign-up, confirmation, login, protected routing, and logout locally.
+- [x] Run a production build.
+- [x] Create the initial Git commit.
+- [ ] Push the repository to GitHub.
+
+**Done when:** a fresh checkout can be configured and verified using the README instructions.
+
+## Milestone 1: Deck and card management
+
+- Add validated data-access functions and Server Actions for decks and cards.
+- Let users create, view, edit, and delete multilingual decks and vocabulary cards.
+- Provide accessible loading, empty, success, and error states.
+- Add integration tests proving users cannot access another user's data.
+
+**Done when:** an authenticated user can maintain a private vocabulary deck from the UI.
+
+## Milestone 2: Review workflow
+
+- Implement the first simple review-scheduling algorithm behind the existing contract.
+- Add due-card queries, answer reveal, rating controls, and review-event recording.
+- Show basic review progress and history.
+- Test scheduling rules separately from React and persistence.
+
+**Done when:** a user can complete a review session and see future reviews change based on ratings.
+
+## Milestone 3: MVP release
+
+- Test the critical flow from account creation through deck review.
+- Complete accessibility and responsive-layout checks.
+- Configure a hosted Supabase project and apply version-controlled migrations.
+- Deploy to Vercel and verify authentication, RLS, and the learning flow in production.
+
+**Done when:** the private multilingual learning loop works reliably in production.
