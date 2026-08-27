@@ -19,7 +19,7 @@ The application does not yet provide a complete vocabulary-learning workflow. De
 - The local migration, database lint, and 12 cross-user RLS tests pass.
 - The local sign-up, confirmation, login, protected-routing, and logout flow is verified.
 - The production build passes.
-- The repository has an initial commit but no Git remote.
+- The repository is tracked in Git and pushed to its private GitHub remote.
 - No hosted Supabase project or Vercel deployment has been configured.
 
 ## Milestone 0: Stabilize the foundation
@@ -29,7 +29,7 @@ The application does not yet provide a complete vocabulary-learning workflow. De
 - [x] Verify sign-up, confirmation, login, protected routing, and logout locally.
 - [x] Run a production build.
 - [x] Create the initial Git commit.
-- [ ] Push the repository to GitHub.
+- [x] Push the repository to GitHub.
 
 **Done when:** a fresh checkout can be configured and verified using the README instructions.
 
