@@ -26,7 +26,7 @@ const foundationCards = [
   },
   {
     title: "Review progress",
-    description: "Review history is ready for a scheduling algorithm to be added later.",
+    description: "Practice due cards and see when each answer will return.",
     icon: ChartNoAxesColumn,
   },
 ];
@@ -38,12 +38,17 @@ export default function DashboardPage() {
         <p className="text-sm font-medium text-primary">Your garden</p>
         <h1 className="mt-1 text-3xl font-semibold tracking-tight">Dashboard</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Build private multilingual decks now. Review sessions and progress
-          tracking will arrive in the next milestones.
+          Build private multilingual decks and practice cards when they become
+          due.
         </p>
-        <Button asChild className="mt-5">
-          <Link href="/dashboard/decks">Manage decks</Link>
-        </Button>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Button asChild>
+            <Link href="/dashboard/review">Start review</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/dashboard/decks">Manage decks</Link>
+          </Button>
+        </div>
       </div>
       <section aria-labelledby="foundation-heading">
         <h2 id="foundation-heading" className="sr-only">

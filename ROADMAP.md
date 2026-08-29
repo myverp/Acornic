@@ -9,17 +9,18 @@ Acornic is in the pre-MVP stage. The repository contains:
 - A multilingual schema for profiles, languages, decks, cards, and review events
 - Row Level Security policies for user-owned data
 - A complete private deck and vocabulary-card management workflow
-- A framework-independent review-scheduler contract
+- A tested review scheduler, due-card queue, rating flow, and review history
 - Unit tests for authentication, language, deck/card, and review boundaries
 
-The application does not yet provide a complete vocabulary-learning workflow. Review sessions, progress tracking, and production deployment remain to be built.
+The private vocabulary-learning workflow now works locally. Critical-flow release testing, production configuration, and deployment remain to be completed.
 
 ## Current technical status
 
-- ESLint, TypeScript, and all 24 unit tests pass through `npm run check`.
-- The local migration, database lint, and 16 cross-user RLS tests pass.
+- ESLint, TypeScript, and all 28 unit tests pass through `npm run check`.
+- The local migrations, database lint, and 18 cross-user RLS tests pass.
 - The local sign-up, confirmation, login, protected-routing, and logout flow is verified.
 - The local deck and card create, view, edit, and delete flow is verified.
+- The local answer reveal, rating, scheduling, progress, and history flow is verified.
 - The production build passes.
 - The repository is tracked in Git and pushed to its private GitHub remote.
 - No hosted Supabase project or Vercel deployment has been configured.
@@ -46,10 +47,10 @@ The application does not yet provide a complete vocabulary-learning workflow. Re
 
 ## Milestone 2: Review workflow
 
-- Implement the first simple review-scheduling algorithm behind the existing contract.
-- Add due-card queries, answer reveal, rating controls, and review-event recording.
-- Show basic review progress and history.
-- Test scheduling rules separately from React and persistence.
+- [x] Implement the first simple review-scheduling algorithm behind the existing contract.
+- [x] Add due-card queries, answer reveal, rating controls, and review-event recording.
+- [x] Show basic review progress and history.
+- [x] Test scheduling rules separately from React and persistence.
 
 **Done when:** a user can complete a review session and see future reviews change based on ratings.
 

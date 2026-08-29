@@ -2,7 +2,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(16);
+select plan(18);
 
 insert into auth.users (id, email)
 values
@@ -51,17 +51,27 @@ values
     'gland'
   );
 
-insert into public.review_events (card_id, user_id, rating)
+insert into public.review_events (
+  card_id,
+  user_id,
+  rating,
+  review_stage,
+  next_review_at
+)
 values
   (
     '11111111-1111-4111-8111-111111111100',
     '11111111-1111-4111-8111-111111111111',
-    'good'
+    'good',
+    1,
+    now() + interval '1 day'
   ),
   (
     '22222222-2222-4222-8222-222222222200',
     '22222222-2222-4222-8222-222222222222',
-    'easy'
+    'easy',
+    2,
+    now() + interval '3 days'
   );
 
 set local role authenticated;
@@ -95,6 +105,31 @@ select results_eq(
   'select count(*) from public.review_events',
   array[1::bigint],
   'a user sees only their own review events'
+);
+
+select results_eq(
+  'select review_stage from public.review_events',
+  array[1],
+  'a user sees only their own current review schedule'
+);
+
+select lives_ok(
+  $$
+    insert into public.review_events (
+      card_id,
+      user_id,
+      rating,
+      review_stage,
+      next_review_at
+    ) values (
+      '11111111-1111-4111-8111-111111111100',
+      '11111111-1111-4111-8111-111111111111',
+      'again',
+      0,
+      now() + interval '10 minutes'
+    )
+  $$,
+  'a user can record a scheduled review for their own card'
 );
 
 select lives_ok(
@@ -196,11 +231,19 @@ select is_empty(
 
 select throws_ok(
   $$
-    insert into public.review_events (card_id, user_id, rating)
+    insert into public.review_events (
+      card_id,
+      user_id,
+      rating,
+      review_stage,
+      next_review_at
+    )
     values (
       '22222222-2222-4222-8222-222222222200',
       '11111111-1111-4111-8111-111111111111',
-      'again'
+      'again',
+      0,
+      now() + interval '10 minutes'
     )
   $$,
   '42501',

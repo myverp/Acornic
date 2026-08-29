@@ -5,8 +5,9 @@ TypeScript, Tailwind CSS, shadcn/ui, and Supabase.
 
 The current pre-MVP includes email/password authentication, a protected
 dashboard, private multilingual deck and vocabulary-card management, Supabase
-SSR clients, a versioned schema with RLS, and a framework-neutral review
-scheduler contract. Review sessions and progress tracking remain deferred.
+SSR clients, a versioned schema with RLS, and a scheduled review workflow with
+answer reveal, ratings, progress, and history. Production deployment remains
+deferred.
 
 ## Requirements
 
@@ -69,9 +70,10 @@ The database commands require Docker Desktop to be running.
 - `supabase/migrations` — version-controlled PostgreSQL schema and RLS policies
 - `tests/unit` — Vitest unit tests for business boundaries
 
-The review algorithm is represented only by `ReviewScheduler` in
-`src/domain/review/scheduler.ts`. A later milestone can implement an algorithm
-without importing React or changing UI components.
+The simple review algorithm implements `ReviewScheduler` in
+`src/domain/review/scheduler.ts`. It keeps scheduling independent from React and
+persistence: Again returns in 10 minutes, while Hard, Good, and Easy use staged
+intervals up to 60 days.
 
 ## Hosted configuration
 

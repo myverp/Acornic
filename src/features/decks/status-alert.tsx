@@ -12,12 +12,15 @@ const knownMessages = new Set([
   "Deck created.",
   "Deck deleted.",
   "Deck updated.",
+  "Review recorded.",
   "This card is invalid.",
   "This card is no longer available.",
   "This deck is invalid.",
   "This deck is no longer available.",
+  "This review is invalid.",
   "We could not delete this card. Please try again.",
   "We could not delete this deck. Please try again.",
+  "We could not record this review. Please try again.",
 ]);
 
 export function StatusAlert({ error, message }: StatusAlertProps) {
