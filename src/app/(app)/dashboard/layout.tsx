@@ -37,10 +37,12 @@ export default async function DashboardLayout({
                 Overview
               </Link>
             </Button>
-            <span className="hidden items-center gap-2 px-3 text-sm text-muted-foreground sm:flex">
-              <BookOpen className="size-4" aria-hidden="true" />
-              Decks coming next
-            </span>
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/dashboard/decks">
+                <BookOpen className="size-4" aria-hidden="true" />
+                Decks
+              </Link>
+            </Button>
           </nav>
           <form action={signOut}>
             <Button type="submit" variant="outline" size="sm">

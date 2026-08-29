@@ -3,10 +3,10 @@
 Acornic is a multilingual vocabulary-learning application built with Next.js,
 TypeScript, Tailwind CSS, shadcn/ui, and Supabase.
 
-This first milestone contains the public landing page, email/password
-authentication, protected dashboard shell, Supabase SSR clients, environment
-validation, the initial private-data schema with RLS, and a framework-neutral
-review-scheduler contract. Deck and card workflows are intentionally deferred.
+The current pre-MVP includes email/password authentication, a protected
+dashboard, private multilingual deck and vocabulary-card management, Supabase
+SSR clients, a versioned schema with RLS, and a framework-neutral review
+scheduler contract. Review sessions and progress tracking remain deferred.
 
 ## Requirements
 
@@ -64,7 +64,7 @@ The database commands require Docker Desktop to be running.
 - `src/components/ui` — application-owned shadcn/ui components
 - `src/features` — feature actions, validation, and composition
 - `src/domain` — framework-independent business contracts and validation
-- `src/data` — the dedicated Supabase query layer for upcoming features
+- `src/data` — the dedicated Supabase query layer for feature data
 - `src/lib/supabase` — browser, server, and Proxy Supabase clients
 - `supabase/migrations` — version-controlled PostgreSQL schema and RLS policies
 - `tests/unit` — Vitest unit tests for business boundaries

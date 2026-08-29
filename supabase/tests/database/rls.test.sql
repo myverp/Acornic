@@ -2,7 +2,7 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
-select plan(12);
+select plan(16);
 
 insert into auth.users (id, email)
 values
@@ -155,6 +155,43 @@ select throws_ok(
   '42501',
   null,
   'a user cannot add a card to another user''s deck'
+);
+
+select lives_ok(
+  $$
+    update public.cards
+    set translation = 'bellota actualizada'
+    where id = '11111111-1111-4111-8111-111111111100'
+  $$,
+  'a user can update a card in their own deck'
+);
+
+select is_empty(
+  $$
+    update public.cards
+    set translation = 'changed by another user'
+    where id = '22222222-2222-4222-8222-222222222200'
+    returning id
+  $$,
+  'a user cannot update a card in another user''s deck'
+);
+
+select is_empty(
+  $$
+    delete from public.cards
+    where id = '22222222-2222-4222-8222-222222222200'
+    returning id
+  $$,
+  'a user cannot delete a card in another user''s deck'
+);
+
+select is_empty(
+  $$
+    delete from public.decks
+    where id = '22222222-2222-4222-8222-222222222220'
+    returning id
+  $$,
+  'a user cannot delete another user''s deck'
 );
 
 select throws_ok(

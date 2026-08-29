@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { BookOpen, ChartNoAxesColumn, Languages } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -19,7 +21,7 @@ const foundationCards = [
   },
   {
     title: "Vocabulary decks",
-    description: "Deck and card management will arrive in the next product slice.",
+    description: "Create private multilingual decks and add the words you want to remember.",
     icon: BookOpen,
   },
   {
@@ -36,9 +38,12 @@ export default function DashboardPage() {
         <p className="text-sm font-medium text-primary">Your garden</p>
         <h1 className="mt-1 text-3xl font-semibold tracking-tight">Dashboard</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          The secure application shell is ready. Your decks and learning
-          activity will appear here as the next milestones are added.
+          Build private multilingual decks now. Review sessions and progress
+          tracking will arrive in the next milestones.
         </p>
+        <Button asChild className="mt-5">
+          <Link href="/dashboard/decks">Manage decks</Link>
+        </Button>
       </div>
       <section aria-labelledby="foundation-heading">
         <h2 id="foundation-heading" className="sr-only">

@@ -2,22 +2,24 @@
 
 ## Current stage
 
-Acornic is in the foundation/pre-MVP stage. The repository contains:
+Acornic is in the pre-MVP stage. The repository contains:
 
 - A public landing page, sign-up and login flows, and a protected dashboard
 - Supabase SSR clients and environment validation
 - A multilingual schema for profiles, languages, decks, cards, and review events
 - Row Level Security policies for user-owned data
+- A complete private deck and vocabulary-card management workflow
 - A framework-independent review-scheduler contract
-- Unit tests for authentication boundaries, language codes, and review ratings
+- Unit tests for authentication, language, deck/card, and review boundaries
 
-The application does not yet provide a complete vocabulary-learning workflow. Deck and card management, review sessions, progress tracking, and production deployment remain to be built.
+The application does not yet provide a complete vocabulary-learning workflow. Review sessions, progress tracking, and production deployment remain to be built.
 
 ## Current technical status
 
-- ESLint, TypeScript, and all 19 unit tests pass through `npm run check`.
-- The local migration, database lint, and 12 cross-user RLS tests pass.
+- ESLint, TypeScript, and all 24 unit tests pass through `npm run check`.
+- The local migration, database lint, and 16 cross-user RLS tests pass.
 - The local sign-up, confirmation, login, protected-routing, and logout flow is verified.
+- The local deck and card create, view, edit, and delete flow is verified.
 - The production build passes.
 - The repository is tracked in Git and pushed to its private GitHub remote.
 - No hosted Supabase project or Vercel deployment has been configured.
@@ -35,10 +37,10 @@ The application does not yet provide a complete vocabulary-learning workflow. De
 
 ## Milestone 1: Deck and card management
 
-- Add validated data-access functions and Server Actions for decks and cards.
-- Let users create, view, edit, and delete multilingual decks and vocabulary cards.
-- Provide accessible loading, empty, success, and error states.
-- Add integration tests proving users cannot access another user's data.
+- [x] Add validated data-access functions and Server Actions for decks and cards.
+- [x] Let users create, view, edit, and delete multilingual decks and vocabulary cards.
+- [x] Provide accessible loading, empty, success, and error states.
+- [x] Add integration tests proving users cannot access another user's data.
 
 **Done when:** an authenticated user can maintain a private vocabulary deck from the UI.
 
