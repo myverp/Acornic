@@ -2,6 +2,9 @@ begin;
 
 create extension if not exists pgtap with schema extensions;
 
+set local role postgres;
+set local search_path = public, extensions;
+
 select plan(18);
 
 insert into auth.users (id, email)
@@ -268,7 +271,7 @@ select throws_ok(
   'anonymous users cannot read profiles'
 );
 
-reset role;
+set local role postgres;
 
 select * from finish();
 rollback;

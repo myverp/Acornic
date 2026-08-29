@@ -42,7 +42,9 @@ export function AuthForm({
         </Link>
         <Card>
           <CardHeader>
-            <CardTitle>{isSignUp ? "Create your account" : "Welcome back"}</CardTitle>
+            <CardTitle>
+              <h1>{isSignUp ? "Create your account" : "Welcome back"}</h1>
+            </CardTitle>
             <CardDescription>
               {isSignUp
                 ? "Start building vocabulary decks for any language pair."

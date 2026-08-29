@@ -12,7 +12,7 @@ Acornic is in the pre-MVP stage. The repository contains:
 - A tested review scheduler, due-card queue, rating flow, and review history
 - Unit tests for authentication, language, deck/card, and review boundaries
 
-The private vocabulary-learning workflow now works locally. Critical-flow release testing, production configuration, and deployment remain to be completed.
+The private vocabulary-learning workflow works locally. Hosted infrastructure is configured and the production release candidate is live; the real production sign-up-to-review flow still needs to be verified.
 
 ## Current technical status
 
@@ -23,7 +23,10 @@ The private vocabulary-learning workflow now works locally. Critical-flow releas
 - The local answer reveal, rating, scheduling, progress, and history flow is verified.
 - The production build passes.
 - The repository is tracked in Git and pushed to its private GitHub remote.
-- No hosted Supabase project or Vercel deployment has been configured.
+- The hosted Acornic Supabase project has both versioned migrations applied; remote schema lint and all 18 RLS tests pass.
+- The Vercel production release is live at `https://acornic.vercel.app`.
+- The public and anonymous-protected production routes, accessibility checks, and mobile/desktop layouts are verified.
+- Production email confirmation and the authenticated deck-to-review flow have not been exercised.
 
 ## Milestone 0: Stabilize the foundation
 
@@ -56,9 +59,9 @@ The private vocabulary-learning workflow now works locally. Critical-flow releas
 
 ## Milestone 3: MVP release
 
-- Test the critical flow from account creation through deck review.
-- Complete accessibility and responsive-layout checks.
-- Configure a hosted Supabase project and apply version-controlled migrations.
-- Deploy to Vercel and verify authentication, RLS, and the learning flow in production.
+- [ ] Test the critical flow from account creation through deck review.
+- [x] Complete accessibility and responsive-layout checks.
+- [x] Configure a hosted Supabase project and apply version-controlled migrations.
+- [ ] Deploy to Vercel and verify authentication, RLS, and the learning flow in production. Deployment and RLS are verified; authenticated production testing remains.
 
 **Done when:** the private multilingual learning loop works reliably in production.

@@ -6,8 +6,8 @@ TypeScript, Tailwind CSS, shadcn/ui, and Supabase.
 The current pre-MVP includes email/password authentication, a protected
 dashboard, private multilingual deck and vocabulary-card management, Supabase
 SSR clients, a versioned schema with RLS, and a scheduled review workflow with
-answer reveal, ratings, progress, and history. Production deployment remains
-deferred.
+answer reveal, ratings, progress, and history. A production release candidate is
+available at [acornic.vercel.app](https://acornic.vercel.app).
 
 ## Requirements
 
@@ -54,10 +54,13 @@ deferred.
 npm run check
 npm run build
 npx supabase db lint --local --level error --fail-on error
-npx supabase test db
+npx supabase test db --local
 ```
 
 The database commands require Docker Desktop to be running.
+
+After linking the CLI to the hosted Acornic project, the same schema and RLS
+checks can be run with `--linked` instead of `--local`.
 
 ## Structure
 
@@ -77,9 +80,11 @@ intervals up to 60 days.
 
 ## Hosted configuration
 
-For a future Vercel deployment, configure the three variables from
-`.env.example` in the Vercel project and add
-`https://<your-domain>/auth/callback` to the Supabase Auth redirect allowlist.
-Do not add a Supabase secret or service-role key to browser-visible variables.
+Production uses the hosted Acornic Supabase project and the Vercel project named
+`acornic`. Vercel has the three variables from `.env.example`; Supabase Auth uses
+`https://acornic.vercel.app` as its site URL and allows the production and local
+`/auth/callback` URLs.
 
-No Supabase project or Vercel deployment is created by this repository.
+Only the Supabase project URL and publishable key belong in browser-visible
+variables. Never add a Supabase secret or service-role key to Vercel client
+configuration.
