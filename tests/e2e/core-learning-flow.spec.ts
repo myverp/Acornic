@@ -55,6 +55,10 @@ async function waitForConfirmationUrl(
   throw new Error(`No confirmation email arrived for ${email}.`);
 }
 
+test.beforeEach(async ({ context }) => {
+  await context.clearCookies();
+});
+
 test("public landing page renders and dashboard redirects anonymous visitors", async ({
   page,
 }) => {

@@ -34,9 +34,8 @@ jobs:
 
       - name: Configure the local application environment
         run: |
-          npx supabase status -o env --override-name api.url=NEXT_PUBLIC_SUPABASE_URL --override-name auth.anon_key=NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY | grep '^NEXT_PUBLIC_SUPABASE_' >> "$GITHUB_ENV"
-          echo "APP_URL=http://127.0.0.1:3001" >> "$GITHUB_ENV"
-          echo "MAILPIT_URL=http://127.0.0.1:56324" >> "$GITHUB_ENV"
+          npx supabase status -o env --override-name api.url=NEXT_PUBLIC_SUPABASE_URL --override-name auth.anon_key=NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY | grep '^NEXT_PUBLIC_SUPABASE_' > .env.local
+          echo "APP_URL=http://127.0.0.1:3001" >> .env.local
 
       - run: npm run check
       - run: npm run build
