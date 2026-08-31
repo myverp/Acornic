@@ -3,11 +3,11 @@
 Acornic is a multilingual vocabulary-learning application built with Next.js,
 TypeScript, Tailwind CSS, shadcn/ui, and Supabase.
 
-The current pre-MVP includes email/password authentication, a protected
+The production MVP includes email/password authentication, a protected
 dashboard, private multilingual deck and vocabulary-card management, Supabase
 SSR clients, a versioned schema with RLS, and a scheduled review workflow with
-answer reveal, ratings, progress, and history. A production release candidate is
-available at [acornic.vercel.app](https://acornic.vercel.app).
+answer reveal, ratings, progress, and history. It is available at
+[acornic.vercel.app](https://acornic.vercel.app).
 
 ## Requirements
 
@@ -55,9 +55,13 @@ npm run check
 npm run build
 npx supabase db lint --local --level error --fail-on error
 npx supabase test db --local
+npm run test:e2e
 ```
 
-The database commands require Docker Desktop to be running.
+The database and browser commands require Docker Desktop to be running. The
+browser test starts the local app, creates a synthetic local account, confirms
+it through Mailpit, and exercises deck, card, and review creation. It never
+uses production credentials or data.
 
 After linking the CLI to the hosted Acornic project, the same schema and RLS
 checks can be run with `--linked` instead of `--local`.
@@ -88,3 +92,14 @@ Production uses the hosted Acornic Supabase project and the Vercel project named
 Only the Supabase project URL and publishable key belong in browser-visible
 variables. Never add a Supabase secret or service-role key to Vercel client
 configuration.
+
+## Release reliability
+
+GitHub Actions runs linting, TypeScript, unit tests, a production build, local
+database linting and RLS tests, and the browser smoke test on pull requests and
+pushes to `main`. A separate scheduled workflow checks the production landing
+page and anonymous dashboard redirect every six hours.
+
+Vercel Web Analytics and runtime Logs are the free production monitoring
+surface. Backup, restore, and rollback procedures are in
+[docs/operations.md](docs/operations.md).

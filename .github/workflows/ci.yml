@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify application and local database
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Start and reset local Supabase
+        run: |
+          npx supabase start
+          npx supabase db reset
+          for attempt in {1..30}; do
+            if npx supabase migration list --local --output json | grep -Eq '"remote"[[:space:]]*:[[:space:]]*"20260829125424"'; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Local migrations did not finish applying."
+          exit 1
+
+      - name: Configure the local application environment
+        run: |
+          npx supabase status -o env --override-name api.url=NEXT_PUBLIC_SUPABASE_URL --override-name auth.anon_key=NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY | grep '^NEXT_PUBLIC_SUPABASE_' >> "$GITHUB_ENV"
+          echo "APP_URL=http://127.0.0.1:3001" >> "$GITHUB_ENV"
+          echo "MAILPIT_URL=http://127.0.0.1:56324" >> "$GITHUB_ENV"
+
+      - run: npm run check
+      - run: npm run build
+      - run: npx supabase db lint --local --level error --fail-on error
+      - run: npx supabase test db --local
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - run: npm run test:e2e
+
+      - name: Upload browser-test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: test-results/
+          if-no-files-found: ignore

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { recordReview } from "@/data/reviews";
 import { isReviewRating } from "@/domain/review/scheduler";
 import { entityIdSchema } from "@/features/decks/schemas";
+import { logServerActionFailure } from "@/lib/monitoring/server";
 
 function reviewNotice(kind: "error" | "message", message: string): string {
   return `/dashboard/review?${new URLSearchParams({ [kind]: message })}`;
@@ -24,7 +25,8 @@ export async function recordReviewAction(
 
   try {
     await recordReview(cardIdResult.data, rating, new Date());
-  } catch {
+  } catch (error) {
+    logServerActionFailure("record_review", error);
     redirect(
       reviewNotice(
         "error",

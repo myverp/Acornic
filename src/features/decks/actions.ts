@@ -12,6 +12,7 @@ import {
   firstDeckValidationMessage,
   vocabularyCardSchema,
 } from "@/features/decks/schemas";
+import { logServerActionFailure } from "@/lib/monitoring/server";
 
 function noticeUrl(
   path: string,
@@ -39,7 +40,8 @@ export async function createDeckAction(
   let deckId: string;
   try {
     deckId = await createDeck(result.data);
-  } catch {
+  } catch (error) {
+    logServerActionFailure("create_deck", error);
     return { error: "We could not create this deck. Please try again." };
   }
 
@@ -70,7 +72,8 @@ export async function updateDeckAction(
   let updated: boolean;
   try {
     updated = await updateDeck(idResult.data, inputResult.data);
-  } catch {
+  } catch (error) {
+    logServerActionFailure("update_deck", error);
     return { error: "We could not save this deck. Please try again." };
   }
 
@@ -95,7 +98,8 @@ export async function deleteDeckAction(deckId: string): Promise<void> {
   let deleted = false;
   try {
     deleted = await deleteDeck(result.data);
-  } catch {
+  } catch (error) {
+    logServerActionFailure("delete_deck", error);
     redirect(
       noticeUrl(
         `/dashboard/decks/${result.data}/edit`,
@@ -138,7 +142,8 @@ export async function createCardAction(
 
   try {
     await createCard(idResult.data, inputResult.data);
-  } catch {
+  } catch (error) {
+    logServerActionFailure("create_card", error);
     return { error: "We could not add this card. Please try again." };
   }
 
@@ -178,7 +183,8 @@ export async function updateCardAction(
       cardIdResult.data,
       inputResult.data,
     );
-  } catch {
+  } catch (error) {
+    logServerActionFailure("update_card", error);
     return { error: "We could not save this card. Please try again." };
   }
 
@@ -210,7 +216,8 @@ export async function deleteCardAction(
   let deleted = false;
   try {
     deleted = await deleteCard(deckIdResult.data, cardIdResult.data);
-  } catch {
+  } catch (error) {
+    logServerActionFailure("delete_card", error);
     redirect(
       noticeUrl(
         `/dashboard/decks/${deckIdResult.data}`,

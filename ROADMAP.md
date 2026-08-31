@@ -2,7 +2,7 @@
 
 ## Current stage
 
-Acornic is in the pre-MVP stage. The repository contains:
+Acornic has reached its first production MVP. The repository contains:
 
 - A public landing page, sign-up and login flows, and a protected dashboard
 - Supabase SSR clients and environment validation
@@ -12,7 +12,7 @@ Acornic is in the pre-MVP stage. The repository contains:
 - A tested review scheduler, due-card queue, rating flow, and review history
 - Unit tests for authentication, language, deck/card, and review boundaries
 
-The private vocabulary-learning workflow works locally. Hosted infrastructure is configured and the production release candidate is live; the real production sign-up-to-review flow still needs to be verified.
+The private multilingual learning loop works locally and in production at `https://acornic.vercel.app`.
 
 ## Current technical status
 
@@ -26,7 +26,7 @@ The private vocabulary-learning workflow works locally. Hosted infrastructure is
 - The hosted Acornic Supabase project has both versioned migrations applied; remote schema lint and all 18 RLS tests pass.
 - The Vercel production release is live at `https://acornic.vercel.app`.
 - The public and anonymous-protected production routes, accessibility checks, and mobile/desktop layouts are verified.
-- Production email confirmation and the authenticated deck-to-review flow have not been exercised.
+- The production account creation, email confirmation, authentication, deck/card management, and review flow are verified.
 
 ## Milestone 0: Stabilize the foundation
 
@@ -59,9 +59,30 @@ The private vocabulary-learning workflow works locally. Hosted infrastructure is
 
 ## Milestone 3: MVP release
 
-- [ ] Test the critical flow from account creation through deck review.
+- [x] Test the critical flow from account creation through deck review.
 - [x] Complete accessibility and responsive-layout checks.
 - [x] Configure a hosted Supabase project and apply version-controlled migrations.
-- [ ] Deploy to Vercel and verify authentication, RLS, and the learning flow in production. Deployment and RLS are verified; authenticated production testing remains.
+- [x] Deploy to Vercel and verify authentication, RLS, and the learning flow in production.
 
 **Done when:** the private multilingual learning loop works reliably in production.
+
+## Milestone 4: Release reliability
+
+- [ ] Add GitHub Actions checks for linting, TypeScript, unit tests, production builds, and local RLS tests.
+- [ ] Add a small automated browser smoke test for public pages, protected routing, and the core learning flow.
+- [ ] Configure production error monitoring and a basic uptime check.
+- [ ] Document backup, restore, and rollback procedures for Supabase and Vercel.
+
+**Done when:** regressions and production failures are detected automatically, and a release can be safely rolled back.
+
+**Verification in progress:** on 31 August 2026, the local CI-equivalent checks,
+18 RLS assertions, production build, local browser smoke test, and production
+uptime smoke check passed. GitHub Actions execution will be recorded after the
+workflow's first push-triggered run.
+
+## Later improvements
+
+1. Add CSV import and export for vocabulary cards to reduce manual data entry and keep user data portable.
+2. Add deck search, filtering, and sorting once larger collections make navigation difficult.
+3. Improve review insights with due-card forecasts and per-deck accuracy, without adding complex gamification.
+4. Let users suspend cards and reset a card's review progress when the learning content changes.

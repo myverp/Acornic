@@ -9,6 +9,7 @@ import {
   signUpSchema,
 } from "@/features/auth/schemas";
 import { getServerEnvironment } from "@/lib/env/server";
+import { logServerActionFailure } from "@/lib/monitoring/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 function redirectWithNotice(
@@ -68,6 +69,7 @@ export async function signUp(formData: FormData): Promise<void> {
   });
 
   if (error) {
+    logServerActionFailure("sign_up", error);
     redirectWithNotice(
       "/sign-up",
       "error",
