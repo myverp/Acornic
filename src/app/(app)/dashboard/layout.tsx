@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen, Brain, LayoutDashboard, Sprout } from "lucide-react";
+import { BookOpen, Brain, LayoutDashboard, List, Sprout } from "lucide-react";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -41,6 +41,12 @@ export default async function DashboardLayout({
               <Link href="/dashboard/decks" aria-label="Decks">
                 <BookOpen className="size-4" aria-hidden="true" />
                 <span className="hidden sm:inline">Decks</span>
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/dashboard/cards" aria-label="Cards">
+                <List className="size-4" aria-hidden="true" />
+                <span className="hidden sm:inline">Cards</span>
               </Link>
             </Button>
             <Button asChild variant="ghost" size="sm">

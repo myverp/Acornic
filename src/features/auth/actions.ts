@@ -80,7 +80,7 @@ export async function signUp(formData: FormData): Promise<void> {
   redirectWithNotice(
     "/login",
     "message",
-    "Check your email to confirm your account.",
+    "Check your email to continue. If you already have an account, log in.",
   );
 }
 

@@ -55,7 +55,7 @@ export function AuthForm({
             <form action={action} className="space-y-5">
               {next ? <input type="hidden" name="next" value={next} /> : null}
               {error ? (
-                <Alert variant="destructive">
+                <Alert variant="destructive" className="motion-error">
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               ) : null}

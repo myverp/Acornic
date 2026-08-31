@@ -3,8 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { createCard, deleteCard, updateCard } from "@/data/cards";
-import { createDeck, deleteDeck, updateDeck } from "@/data/decks";
+import {
+  createCard,
+  deleteCard,
+  importStarterCards,
+  updateCard,
+} from "@/data/cards";
+import { createDeck, deleteDeck, getDeck, updateDeck } from "@/data/decks";
+import { getEnglishGermanStarterCards } from "@/domain/datasets/english-german-starter";
 import type { FormActionState } from "@/features/decks/form-state";
 import {
   deckSchema,
@@ -151,6 +157,62 @@ export async function createCardAction(
   redirect(
     noticeUrl(`/dashboard/decks/${idResult.data}`, "message", "Card added."),
   );
+}
+
+export async function importEnglishGermanStarterAction(
+  deckId: string,
+  _previousState: FormActionState,
+  _formData: FormData,
+): Promise<FormActionState> {
+  void _previousState;
+  void _formData;
+
+  const idResult = entityIdSchema.safeParse(deckId);
+
+  if (!idResult.success) {
+    return { error: "This deck is no longer available." };
+  }
+
+  let deck;
+  try {
+    deck = await getDeck(idResult.data);
+  } catch (error) {
+    logServerActionFailure("load_starter_set_deck", error);
+    return { error: "We could not prepare this starter set. Please try again." };
+  }
+
+  if (!deck) {
+    return { error: "This deck is no longer available." };
+  }
+
+  const cards = getEnglishGermanStarterCards(
+    deck.sourceLanguageCode,
+    deck.targetLanguageCode,
+  );
+
+  if (!cards) {
+    return { error: "This starter set is available only for English–German decks." };
+  }
+
+  try {
+    const result = await importStarterCards(idResult.data, cards);
+    revalidatePath(`/dashboard/decks/${idResult.data}`);
+    revalidatePath("/dashboard/cards");
+
+    if (result.imported === 0) {
+      return { message: "All 100 starter cards are already in this deck." };
+    }
+
+    return {
+      message:
+        result.skipped === 0
+          ? `Added ${result.imported} starter cards.`
+          : `Added ${result.imported} starter cards and skipped ${result.skipped} existing words.`,
+    };
+  } catch (error) {
+    logServerActionFailure("import_english_german_starter", error);
+    return { error: "We could not import the starter cards. Please try again." };
+  }
 }
 
 export async function updateCardAction(

@@ -48,6 +48,9 @@ export default function DashboardPage() {
           <Button asChild variant="outline">
             <Link href="/dashboard/decks">Manage decks</Link>
           </Button>
+          <Button asChild variant="outline">
+            <Link href="/dashboard/cards">Browse cards</Link>
+          </Button>
         </div>
       </div>
       <section aria-labelledby="foundation-heading">

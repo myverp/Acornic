@@ -10,6 +10,7 @@ import {
   initialFormActionState,
   type FormActionState,
 } from "@/features/decks/form-state";
+import { LanguageCodeInput } from "@/features/decks/language-code-input";
 
 type DeckFormProps = {
   action: (
@@ -49,35 +50,18 @@ export function DeckForm({ action, defaults, submitLabel }: DeckFormProps) {
         />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="sourceLanguageCode">Language you know</Label>
-          <Input
-            id="sourceLanguageCode"
-            name="sourceLanguageCode"
-            defaultValue={defaults?.sourceLanguageCode}
-            placeholder="en"
-            autoCapitalize="none"
-            autoComplete="off"
-            spellCheck={false}
-            required
-          />
-          <p className="text-xs text-muted-foreground">
-            Use a language code such as en, uk, or pt-BR.
-          </p>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="targetLanguageCode">Language to learn</Label>
-          <Input
-            id="targetLanguageCode"
-            name="targetLanguageCode"
-            defaultValue={defaults?.targetLanguageCode}
-            placeholder="es"
-            autoCapitalize="none"
-            autoComplete="off"
-            spellCheck={false}
-            required
-          />
-        </div>
+        <LanguageCodeInput
+          id="sourceLanguageCode"
+          name="sourceLanguageCode"
+          label="Language you know"
+          defaultValue={defaults?.sourceLanguageCode}
+        />
+        <LanguageCodeInput
+          id="targetLanguageCode"
+          name="targetLanguageCode"
+          label="Language to learn"
+          defaultValue={defaults?.targetLanguageCode}
+        />
       </div>
       <Button type="submit" disabled={pending}>
         {pending ? "Saving…" : submitLabel}

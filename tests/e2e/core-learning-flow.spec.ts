@@ -73,7 +73,7 @@ test("public landing page renders and dashboard redirects anonymous visitors", a
   await expect(page.getByRole("heading", { name: "Welcome back" })).toBeVisible();
 });
 
-test("a confirmed user can create a card and record a review", async ({
+test("a confirmed user can import starter cards and record a review", async ({
   page,
   request,
 }) => {
@@ -84,7 +84,11 @@ test("a confirmed user can create a card and record a review", async ({
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill(password);
   await page.getByRole("button", { name: "Create account" }).click();
-  await expect(page.getByText("Check your email to confirm your account.")).toBeVisible();
+  await expect(
+    page.getByText(
+      "Check your email to continue. If you already have an account, log in.",
+    ),
+  ).toBeVisible();
 
   await page.goto(await waitForConfirmationUrl(request, email));
   await expect(page).toHaveURL(/\/login\?next=%2Fdashboard$/);
@@ -96,14 +100,27 @@ test("a confirmed user can create a card and record a review", async ({
   await page.getByRole("link", { name: "Decks", exact: true }).click();
   await page.getByLabel("Deck title").fill("Smoke test deck");
   await page.getByLabel("Language you know").fill("en");
-  await page.getByLabel("Language to learn").fill("uk");
+  await page.getByLabel("Language to learn").fill("de");
   await page.getByRole("button", { name: "Create deck" }).click();
   await expect(page).toHaveURL(/\/dashboard\/decks\/[^/?]+(?:\?[^#]*)?$/);
 
-  await page.getByLabel("Word or phrase").fill("hello");
-  await page.getByLabel("Translation").fill("привіт");
+  await page.getByRole("button", { name: "Add 100 starter cards" }).click();
+  await expect(page.getByText("Added 100 starter cards.")).toBeVisible();
+  await page.getByRole("button", { name: "Add 100 starter cards" }).click();
+  await expect(
+    page.getByText("All 100 starter cards are already in this deck."),
+  ).toBeVisible();
+
+  await page.getByLabel("Word or phrase").fill("practice");
+  await page.getByLabel("Translation").fill("Übung");
   await page.getByRole("button", { name: "Add card" }).click();
-  await expect(page.getByText("привіт", { exact: true })).toBeVisible();
+  await expect(page.getByText("Übung", { exact: true })).toBeVisible();
+
+  await page.getByRole("link", { name: "Cards", exact: true }).click();
+  await expect(page).toHaveURL(/\/dashboard\/cards$/);
+  await expect(page.getByText("hello", { exact: true })).toBeVisible();
+  await expect(page.getByText("Hallo", { exact: true })).toBeVisible();
+  await expect(page.getByText("Übung", { exact: true })).toBeVisible();
 
   await page.getByRole("link", { name: "Review", exact: true }).click();
   await page.getByRole("button", { name: "Reveal answer" }).click();

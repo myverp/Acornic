@@ -12,13 +12,16 @@ import {
 } from "@/components/ui/card";
 import { getDeck } from "@/data/decks";
 import { listCards } from "@/data/cards";
+import { getEnglishGermanStarterCards } from "@/domain/datasets/english-german-starter";
 import {
   createCardAction,
   deleteCardAction,
+  importEnglishGermanStarterAction,
 } from "@/features/decks/actions";
 import { CardForm } from "@/features/decks/card-form";
 import { DeleteButton } from "@/features/decks/delete-button";
 import { entityIdSchema } from "@/features/decks/schemas";
+import { StarterSetImportForm } from "@/features/decks/starter-set-import-form";
 import { StatusAlert } from "@/features/decks/status-alert";
 
 type DeckPageProps = {
@@ -47,6 +50,14 @@ export default async function DeckPage({
 
   const cards = await listCards(deck.id);
   const createCardForDeck = createCardAction.bind(null, deck.id);
+  const starterCards = getEnglishGermanStarterCards(
+    deck.sourceLanguageCode,
+    deck.targetLanguageCode,
+  );
+  const importStarterCardsForDeck = importEnglishGermanStarterAction.bind(
+    null,
+    deck.id,
+  );
 
   return (
     <div className="space-y-8">
@@ -156,17 +167,36 @@ export default async function DeckPage({
           )}
         </section>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Add a card</CardTitle>
-            <CardDescription>
-              Examples and notes are optional and can be added later.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <CardForm action={createCardForDeck} submitLabel="Add card" />
-          </CardContent>
-        </Card>
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Add a card</CardTitle>
+              <CardDescription>
+                Examples and notes are optional and can be added later.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <CardForm action={createCardForDeck} submitLabel="Add card" />
+            </CardContent>
+          </Card>
+
+          {starterCards ? (
+            <Card className="motion-card">
+              <CardHeader>
+                <CardTitle>English–German starter dataset</CardTitle>
+                <CardDescription>
+                  A compact set of everyday vocabulary for this language pair.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <StarterSetImportForm
+                  action={importStarterCardsForDeck}
+                  cardCount={starterCards.length}
+                />
+              </CardContent>
+            </Card>
+          ) : null}
+        </div>
       </div>
     </div>
   );

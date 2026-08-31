@@ -62,7 +62,7 @@ export default async function DecksPage({ searchParams }: DecksPageProps) {
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
               {decks.map((deck) => (
-                <Card key={deck.id}>
+                <Card key={deck.id} className="motion-card">
                   <CardHeader>
                     <CardTitle>{deck.title}</CardTitle>
                     <CardDescription>
