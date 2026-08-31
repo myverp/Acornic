@@ -68,17 +68,21 @@ The private multilingual learning loop works locally and in production at `https
 
 ## Milestone 4: Release reliability
 
-- [ ] Add GitHub Actions checks for linting, TypeScript, unit tests, production builds, and local RLS tests.
-- [ ] Add a small automated browser smoke test for public pages, protected routing, and the core learning flow.
-- [ ] Configure production error monitoring and a basic uptime check.
-- [ ] Document backup, restore, and rollback procedures for Supabase and Vercel.
+- [x] Add GitHub Actions checks for linting, TypeScript, unit tests, production builds, and local RLS tests.
+- [x] Add a small automated browser smoke test for public pages, protected routing, and the core learning flow.
+- [x] Configure production error monitoring and a basic uptime check.
+- [x] Document backup, restore, and rollback procedures for Supabase and Vercel.
 
 **Done when:** regressions and production failures are detected automatically, and a release can be safely rolled back.
 
-**Verification in progress:** on 31 August 2026, the local CI-equivalent checks,
-18 RLS assertions, production build, local browser smoke test, and production
-uptime smoke check passed. GitHub Actions execution will be recorded after the
-workflow's first push-triggered run.
+**Evidence (31 August 2026):** [CI run 33392427348](https://github.com/myverp/Acornic/actions/runs/33392427348)
+passed linting, 28 unit tests, the production build, database linting, 18 RLS
+assertions, and two Playwright browser smoke tests. Vercel deployed
+[production](https://acornic.vercel.app) successfully, and
+[uptime run 33394472751](https://github.com/myverp/Acornic/actions/runs/33394472751)
+passed against its canonical URL. Vercel Web Analytics and structured server
+failure logs provide production observability; backup, restore, and rollback
+steps are in [docs/operations.md](docs/operations.md).
 
 ## Later improvements
 
