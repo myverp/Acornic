@@ -108,9 +108,9 @@ test("a confirmed user can import starter cards and record a review", async ({
   const english = knownLanguages.getByRole("checkbox", { name: "English en" });
   const german = learningLanguages.getByRole("checkbox", { name: "German de" });
 
-  await english.check();
+  await english.check({ force: true });
   await expect(english).toBeChecked();
-  await german.check();
+  await german.check({ force: true });
   await expect(german).toBeChecked();
   await page.getByRole("button", { name: "Continue to Acornic" }).click();
   await expect(page).toHaveURL(/\/dashboard$/);
