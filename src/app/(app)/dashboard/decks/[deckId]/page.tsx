@@ -81,7 +81,7 @@ export default async function DeckPage({
             </p>
           </div>
           <Button asChild variant="outline">
-            <Link href={`/dashboard/decks/${deck.id}/edit`}>
+            <Link href={`/dashboard/preferences/decks/${deck.id}`}>
               <Pencil aria-hidden="true" />
               Edit deck
             </Link>

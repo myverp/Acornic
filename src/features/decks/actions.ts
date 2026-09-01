@@ -10,6 +10,10 @@ import {
   updateCard,
 } from "@/data/cards";
 import { createDeck, deleteDeck, getDeck, updateDeck } from "@/data/decks";
+import {
+  getLanguagePreferences,
+  hasSavedLanguagePair,
+} from "@/data/language-preferences";
 import { getEnglishGermanStarterCards } from "@/domain/datasets/english-german-starter";
 import type { FormActionState } from "@/features/decks/form-state";
 import {
@@ -43,6 +47,25 @@ export async function createDeckAction(
     return { error: firstDeckValidationMessage(result.error) };
   }
 
+  try {
+    const preferences = await getLanguagePreferences();
+    if (
+      !hasSavedLanguagePair(
+        preferences,
+        result.data.sourceLanguageCode,
+        result.data.targetLanguageCode,
+      )
+    ) {
+      return {
+        error:
+          "Choose a saved language pair in Profile / Preferences before creating a deck.",
+      };
+    }
+  } catch (error) {
+    logServerActionFailure("load_deck_language_preferences", error);
+    return { error: "We could not load your preferences. Please try again." };
+  }
+
   let deckId: string;
   try {
     deckId = await createDeck(result.data);
@@ -73,6 +96,33 @@ export async function updateDeckAction(
 
   if (!inputResult.success) {
     return { error: firstDeckValidationMessage(inputResult.error) };
+  }
+
+  try {
+    const [preferences, existingDeck] = await Promise.all([
+      getLanguagePreferences(),
+      getDeck(idResult.data),
+    ]);
+    const isExistingPair =
+      existingDeck?.sourceLanguageCode === inputResult.data.sourceLanguageCode &&
+      existingDeck.targetLanguageCode === inputResult.data.targetLanguageCode;
+
+    if (
+      !isExistingPair &&
+      !hasSavedLanguagePair(
+        preferences,
+        inputResult.data.sourceLanguageCode,
+        inputResult.data.targetLanguageCode,
+      )
+    ) {
+      return {
+        error:
+          "Choose a saved language pair in Profile / Preferences before changing this deck.",
+      };
+    }
+  } catch (error) {
+    logServerActionFailure("load_deck_language_preferences", error);
+    return { error: "We could not load your preferences. Please try again." };
   }
 
   let updated: boolean;

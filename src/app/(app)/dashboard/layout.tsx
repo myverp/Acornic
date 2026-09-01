@@ -1,10 +1,18 @@
 import Link from "next/link";
-import { BookOpen, Brain, LayoutDashboard, List, Sprout } from "lucide-react";
+import {
+  BookOpen,
+  Brain,
+  LayoutDashboard,
+  List,
+  Settings,
+  Sprout,
+} from "lucide-react";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { hasCompletedLanguagePreferences } from "@/data/language-preferences";
 import { signOut } from "@/features/auth/actions";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -16,6 +24,10 @@ export default async function DashboardLayout({
 
   if (error || !data?.claims?.sub) {
     redirect("/login");
+  }
+
+  if (!(await hasCompletedLanguagePreferences())) {
+    redirect("/onboarding");
   }
 
   return (
@@ -53,6 +65,12 @@ export default async function DashboardLayout({
               <Link href="/dashboard/review" aria-label="Review">
                 <Brain className="size-4" aria-hidden="true" />
                 <span className="hidden sm:inline">Review</span>
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/dashboard/preferences" aria-label="Profile">
+                <Settings className="size-4" aria-hidden="true" />
+                <span className="hidden sm:inline">Profile</span>
               </Link>
             </Button>
           </nav>

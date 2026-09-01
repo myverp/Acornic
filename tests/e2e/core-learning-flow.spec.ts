@@ -95,12 +95,30 @@ test("a confirmed user can import starter cards and record a review", async ({
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill(password);
   await page.getByRole("button", { name: "Log in" }).click();
+  await expect(page).toHaveURL(/\/onboarding$/);
+  await expect(
+    page.getByRole("heading", { name: "Choose your languages" }),
+  ).toBeVisible();
+  const knownLanguages = page.getByRole("group", {
+    name: "Languages you know",
+  });
+  const learningLanguages = page.getByRole("group", {
+    name: "Languages you want to learn",
+  });
+  const english = knownLanguages.getByRole("checkbox", { name: "English en" });
+  const german = learningLanguages.getByRole("checkbox", { name: "German de" });
+
+  await english.check();
+  await expect(english).toBeChecked();
+  await german.check();
+  await expect(german).toBeChecked();
+  await page.getByRole("button", { name: "Continue to Acornic" }).click();
   await expect(page).toHaveURL(/\/dashboard$/);
 
   await page.getByRole("link", { name: "Decks", exact: true }).click();
   await page.getByLabel("Deck title").fill("Smoke test deck");
-  await page.getByLabel("Language you know").fill("en");
-  await page.getByLabel("Language to learn").fill("de");
+  await page.getByLabel("Language you know").selectOption("en");
+  await page.getByLabel("Language to learn").selectOption("de");
   await page.getByRole("button", { name: "Create deck" }).click();
   await expect(page).toHaveURL(/\/dashboard\/decks\/[^/?]+(?:\?[^#]*)?$/);
 

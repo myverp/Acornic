@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { listDecks } from "@/data/decks";
+import { getLanguagePreferences } from "@/data/language-preferences";
 import { createDeckAction } from "@/features/decks/actions";
 import { DeckForm } from "@/features/decks/deck-form";
 import { StatusAlert } from "@/features/decks/status-alert";
@@ -22,9 +23,10 @@ type DecksPageProps = {
 };
 
 export default async function DecksPage({ searchParams }: DecksPageProps) {
-  const [{ error, message }, decks] = await Promise.all([
+  const [{ error, message }, decks, languageOptions] = await Promise.all([
     searchParams,
     listDecks(),
+    getLanguagePreferences(),
   ]);
 
   return (
@@ -87,11 +89,15 @@ export default async function DecksPage({ searchParams }: DecksPageProps) {
           <CardHeader>
             <CardTitle>Create a deck</CardTitle>
             <CardDescription>
-              Language codes keep every deck multilingual and portable.
+              Choose from the language preferences saved in your profile.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <DeckForm action={createDeckAction} submitLabel="Create deck" />
+            <DeckForm
+              action={createDeckAction}
+              languageOptions={languageOptions}
+              submitLabel="Create deck"
+            />
           </CardContent>
         </Card>
       </div>
