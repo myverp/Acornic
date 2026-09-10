@@ -7,7 +7,7 @@ The production MVP includes email/password authentication, a protected
 dashboard, private multilingual deck and vocabulary-card management, Supabase
 SSR clients, a versioned schema with RLS, and a scheduled review workflow with
 answer reveal, ratings, progress, and history. It is available at
-[acornic.vercel.app](https://acornic.vercel.app).
+[acornic.vercel.app](https://acornic.vercel.app). (temporary unavailable)
 
 ## Requirements
 
